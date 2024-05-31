@@ -181,11 +181,8 @@ void command::rmecho(std::vector<skor::Polygon>& data)
   std::cout << count << std::endl;
 }
 
-void command::inframe(const std::vector<skor::Polygon>& data)
+void command::inframe(const std::vector<skor::Polygon>& data, skor::Polygon& target)
 {
-  skor::Polygon target;
-  std::cin >> target;
-
   if (std::cin.fail() || std::cin.get() != '\n')
   {
     throw std::invalid_argument("<INVALID COMMAND>");

@@ -85,7 +85,9 @@ int main(int argC, char* argV[])
         }
         else if (cmd == "INFRAME")
         {
-          command::inframe(data);
+          skor::Polygon arg;
+          std::cin >> arg;
+          command::inframe(data, arg);
         }
         else if (cmd != "")
         {
@@ -95,6 +97,7 @@ int main(int argC, char* argV[])
       catch (const std::invalid_argument& er)
       {
         std::cout << er.what() << std::endl;
+        std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
       }
     }

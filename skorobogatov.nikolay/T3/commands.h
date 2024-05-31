@@ -13,7 +13,7 @@ namespace command
   void min(const std::vector<skor::Polygon>& data, const std::string& arg);
   void count(const std::vector<skor::Polygon>& data, const std::string& arg);
   void rmecho(std::vector<skor::Polygon>& data);
-  void inframe(const std::vector<skor::Polygon>& data);
+  void inframe(const std::vector<skor::Polygon>& data, skor::Polygon& target);
 }
 
 #endif
