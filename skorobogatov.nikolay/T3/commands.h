@@ -8,10 +8,10 @@
 namespace command
 {
   int convertToNumber(const std::string& str);
-  void area(const std::vector<skor::Polygon>& data);
-  void max(const std::vector<skor::Polygon>& data);
-  void min(const std::vector<skor::Polygon>& data);
-  void count(const std::vector<skor::Polygon>& data);
+  void area(const std::vector<skor::Polygon>& data, const std::string& arg);
+  void max(const std::vector<skor::Polygon>& data, const std::string& arg);
+  void min(const std::vector<skor::Polygon>& data, const std::string& arg);
+  void count(const std::vector<skor::Polygon>& data, const std::string& arg);
   void rmecho(std::vector<skor::Polygon>& data);
   void inframe(const std::vector<skor::Polygon>& data);
 }

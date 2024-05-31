@@ -50,24 +50,34 @@ int main(int argC, char* argV[])
     while (!std::cin.eof())
     {
       std::string cmd;
+
       std::cin >> cmd;
+
       try
       {
         if (cmd == "AREA")
         {
-          command::area(data);
+          std::string arg = "";
+          std::cin >> arg;
+          command::area(data, arg);
         }
         else if (cmd == "MIN")
         {
-          command::min(data);
+          std::string arg = "";
+          std::cin >> arg;
+          command::min(data, arg);
         }
         else if (cmd == "MAX")
         {
-          command::max(data);
+          std::string arg = "";
+          std::cin >> arg;
+          command::max(data, arg);
         }
         else if (cmd == "COUNT")
         {
-          command::count(data);
+          std::string arg = "";
+          std::cin >> arg;
+          command::count(data, arg);
         }
         else if (cmd == "RMECHO")
         {
@@ -82,10 +92,9 @@ int main(int argC, char* argV[])
           throw std::invalid_argument("<INVALID COMMAND>");
         }
       }
-      catch (const std::invalid_argument& e)
+      catch (const std::invalid_argument& er)
       {
-        std::cout << e.what() << std::endl;
-        std::cin.clear();
+        std::cout << er.what() << std::endl;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
       }
     }

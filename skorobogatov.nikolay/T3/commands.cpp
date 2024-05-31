@@ -3,6 +3,7 @@
 #include <numeric>
 #include <limits>
 #include <string>
+#include <iostream>
 
 #include "commands.h"
 
@@ -10,63 +11,65 @@ using namespace std::placeholders;
 
 int command::convertToNumber(const std::string& str)
 {
-  try
+  char* end;
+  int num = strtol(str.c_str(), &end, 10);
+  if (*end != 0)
   {
-    return std::stoi(str);
+    return -1;
   }
-  catch (std::invalid_argument const& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-    return EXIT_FAILURE;
-  }
+  return num;
 }
 
-void command::area(const std::vector<skor::Polygon>& data)
+void command::area(const std::vector<skor::Polygon>& data, const std::string& arg)
 {
-  auto accumulateArea = [](double ac, const skor::Polygon& poly, std::size_t mod2, std::size_t vertices)
+  auto accumulateArea = [](double ac, const skor::Polygon& polygon, std::size_t mod2, std::size_t vertices)
     {
-      if ((poly.points.size() % 2 == mod2) || (mod2 == 2 && poly.points.size() == vertices) || (mod2 == 3))
+      if ((polygon.points.size() % 2 == mod2) || (mod2 == 2 && polygon.points.size() == vertices) || (mod2 == 3))
       {
-        ac += poly.getArea();
+        ac += polygon.getArea();
       }
       return ac;
     };
 
-  std::string arg;
-  std::cin >> arg;
-  if (arg == "EVEN")
+  int num = convertToNumber(arg);
+
+  if (num == -1)
   {
-    std::cout << std::accumulate(data.begin(), data.end(), 0.0,
-      std::bind(accumulateArea, _1, _2, 0, 0)) << '\n';
+    if (arg == "EVEN")
+    {
+      std::cout << std::accumulate(data.begin(), data.end(), 0.0,
+        std::bind(accumulateArea, _1, _2, 0, 0)) << '\n';
+    }
+    else if (arg == "ODD")
+    {
+      std::cout << std::accumulate(data.begin(), data.end(), 0.0,
+        std::bind(accumulateArea, _1, _2, 1, 0)) << '\n';
+    }
+    else if (arg == "MEAN" && data.size() != 0)
+    {
+      std::cout << std::accumulate(data.begin(), data.end(), 0.0,
+        std::bind(accumulateArea, _1, _2, 3, 0)) / data.size() << std::endl;
+    }
+    else
+    {
+      throw std::invalid_argument("<INVALID COMMAND>");
+    }
   }
-  else if (arg == "ODD")
+  else if (num > 2)
   {
     std::cout << std::accumulate(data.begin(), data.end(), 0.0,
-      std::bind(accumulateArea, _1, _2, 1, 0)) << '\n';
-  }
-  else if (arg == "MEAN" && data.size() != 0)
-  {
-    std::cout << std::accumulate(data.begin(), data.end(), 0.0,
-      std::bind(accumulateArea, _1, _2, 3, 0)) / data.size() << std::endl;
-  }
-  else if (std::all_of(arg.begin(), arg.end(), isdigit) && stoi(arg) > 2)
-  {
-    std::cout << std::accumulate(data.begin(), data.end(), 0.0,
-      std::bind(accumulateArea, _1, _2, 2, stoi(arg))) << '\n';
+      std::bind(accumulateArea, _1, _2, 2, num)) << '\n';
   }
   else
   {
-    throw std::runtime_error("<INVALID COMMAND>");
+    throw std::invalid_argument("<INVALID COMMAND>");
   }
 }
 
-void command::max(const std::vector<skor::Polygon>& data)
+void command::max(const std::vector<skor::Polygon>& data, const std::string& arg)
 {
   if (data.empty())
-    throw std::runtime_error("<INVALID COMMAND>");
-
-  std::string arg;
-  std::cin >> arg;
+    throw std::invalid_argument("<INVALID COMMAND>");
 
   if (arg == "AREA")
   {
@@ -88,17 +91,14 @@ void command::max(const std::vector<skor::Polygon>& data)
   }
   else
   {
-    throw std::runtime_error("<INVALID COMMAND>");
+    throw std::invalid_argument("<INVALID COMMAND>");
   }
 }
 
-void command::min(const std::vector<skor::Polygon>& data)
+void command::min(const std::vector<skor::Polygon>& data, const std::string& arg)
 {
   if (data.empty())
-    throw std::runtime_error("<INVALID COMMAND>");
-
-  std::string arg;
-  std::cin >> arg;
+    throw std::invalid_argument("<INVALID COMMAND>");
 
   if (arg == "AREA")
   {
@@ -120,37 +120,44 @@ void command::min(const std::vector<skor::Polygon>& data)
   }
   else
   {
-    throw std::runtime_error("<INVALID COMMAND>");
+    throw std::invalid_argument("<INVALID COMMAND>");
   }
 }
 
-void command::count(const std::vector<skor::Polygon>& data)
+void command::count(const std::vector<skor::Polygon>& data, const std::string& arg)
 {
-  auto countPolygons = [](const skor::Polygon& poly, std::size_t mod2, std::size_t vertices)
+  auto countPolygons = [](const skor::Polygon& polygon, std::size_t mod2, std::size_t vertices)
     {
-      return ((poly.points.size() % 2 == mod2) || (mod2 == 2 && poly.points.size() == vertices));
+      return ((polygon.points.size() % 2 == mod2) || (mod2 == 2 && polygon.points.size() == vertices));
     };
 
-  std::string arg;
-  std::cin >> arg;
-  if (arg == "EVEN")
+  int num = convertToNumber(arg);
+
+  if (num == -1)
   {
-    std::cout << std::count_if(data.begin(), data.end(),
-      std::bind(countPolygons, _1, 0, 0)) << '\n';
+    if (arg == "EVEN")
+    {
+      std::cout << std::count_if(data.begin(), data.end(),
+        std::bind(countPolygons, _1, 0, 0)) << '\n';
+    }
+    else if (arg == "ODD")
+    {
+      std::cout << std::count_if(data.begin(), data.end(),
+        std::bind(countPolygons, _1, 1, 0)) << '\n';
+    }
+    else
+    {
+      throw std::invalid_argument("<INVALID COMMAND>");
+    }
   }
-  else if (arg == "ODD")
-  {
-    std::cout << std::count_if(data.begin(), data.end(),
-      std::bind(countPolygons, _1, 1, 0)) << '\n';
-  }
-  else if (std::all_of(arg.begin(), arg.end(), isdigit) && stoi(arg) > 2)
+  else if (num > 2)
   {
     std::cout << std::count_if(data.begin(), data.end(),
       std::bind(countPolygons, _1, 2, stoi(arg))) << '\n';
   }
   else
   {
-    throw std::runtime_error("<INVALID COMMAND>");
+    throw std::invalid_argument("<INVALID COMMAND>");
   }
 }
 
@@ -181,7 +188,7 @@ void command::inframe(const std::vector<skor::Polygon>& data)
 
   if (std::cin.fail() || std::cin.get() != '\n')
   {
-    throw std::runtime_error("<INVALID COMMAND>");
+    throw std::invalid_argument("<INVALID COMMAND>");
   }
   skor::Frame frame = skor::getFrame(data);
   std::cout << (frame.containsPolygon(target) ? "<TRUE>" : "<FALSE>") << '\n';

@@ -12,32 +12,32 @@ namespace skor
 
     Point(int x = 0, int y = 0) : x(x), y(y) {}
 
-    bool operator==(const Point &other) const;
-    bool operator!=(const Point &other) const;
+    bool operator==(const Point& other) const;
+    bool operator!=(const Point& other) const;
   };
 
   struct Polygon
   {
     std::vector< Point > points;
     double getArea() const;
-    bool operator<(const Polygon &other) const;
-    bool operator==(const Polygon &other) const;
-    bool operator!=(const Polygon &other) const;
+    bool operator<(const Polygon& other) const;
+    bool operator==(const Polygon& other) const;
+    bool operator!=(const Polygon& other) const;
   };
 
   struct Frame
   {
     Point lowerLeft;
     Point upperRight;
-    Frame(const Point &lowerLeft, const Point &upperRight);
-    bool containsPoint(const Point &p) const;
-    bool containsPolygon(const Polygon &poly) const;
+    Frame(const Point& lowerLeft, const Point& upperRight);
+    bool containsPoint(const Point& p) const;
+    bool containsPolygon(const Polygon& poly) const;
   };
 
   struct Triangle
   {
     Point a, b, c;
-    Triangle(const Point &a, const Point &b, const Point &c);
+    Triangle(const Point& a, const Point& b, const Point& c);
     double getArea() const;
   };
 
@@ -52,8 +52,8 @@ namespace skor
   std::ostream& operator<<(std::ostream& out, const Point& point);
   std::ostream& operator<<(std::ostream& out, const Polygon& polygon);
 
-  double getDistance(const Point &p1, const Point &p2);
-  Frame getFrame(const std::vector<Polygon> &data);
+  double getDistance(const Point& p1, const Point& p2);
+  Frame getFrame(const std::vector<Polygon>& data);
 }
 
 #endif
