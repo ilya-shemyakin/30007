@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include <regex>
+#include <cmath>
 
 #include "polygon.h"
 
