@@ -87,13 +87,11 @@ int main(int argc, char* argv[])
         }
         else if (cmd == "INTERSECTIONS")
         {
-          Polygon input;
-          std::cin >> input;
           if (!std::cin)
           {
             throw std::invalid_argument("<INVALID COMMAND>");
           }
-          std::cout << intersections(figures, input) << std::endl;
+          intersections(figures, std::cin, std::cout);
         }
         else if (cmd != "")
         {

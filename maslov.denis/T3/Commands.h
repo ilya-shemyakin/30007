@@ -12,7 +12,6 @@ namespace dnlx
   int minVertexes(std::vector<Polygon>& figures);
   int count(std::vector<Polygon>& figures, const std::string& arg);
   std::string inframe(std::vector<Polygon>& figures, Polygon& input);
-  bool isIntersecting(const Polygon& poly1, const Polygon& poly2);
-  int intersections(const std::vector<Polygon>& figures, const Polygon& input);
+  void intersections(const std::vector< Polygon >& data, std::istream& in, std::ostream& out);
 }
 #endif

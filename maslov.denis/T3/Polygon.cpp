@@ -13,6 +13,10 @@ namespace dnlx
   {
     return (this->x != other.x) || (this->y != other.y);
   }
+  bool Point::operator<(const Point& other) const
+  {
+    return x < other.x && y < other.y;
+  }
   bool Polygon::operator==(const Polygon& other)
   {
     if (this->points.size() != other.points.size())
