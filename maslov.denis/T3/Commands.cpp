@@ -106,8 +106,8 @@ namespace dnlx
   {
     auto orientation = [](const Point& p, const Point& q, const Point& r) -> int {
       int val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
-      if (val == 0) return 0; 
-      return (val > 0) ? 1 : 2; 
+      if (val == 0) return 0;
+      return (val > 0) ? 1 : 2;
       };
     auto onSegment = [](const Point& p, const Point& q, const Point& r) -> bool {
       return (q.x <= std::max(p.x, r.x) && q.x >= std::min(p.x, r.x) &&
